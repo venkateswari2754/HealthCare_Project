@@ -91,6 +91,51 @@ def save_sample(df: pd.DataFrame, name: str):
     return path
 
 
+def _plot_numeric_histograms(df: pd.DataFrame, name: str, max_plots: int = 6):
+    """Save histograms for numeric columns (up to max_plots)."""
+    import matplotlib.pyplot as plt
+
+    num_df = df.select_dtypes(include=[np.number])
+    cols = list(num_df.columns)[:max_plots]
+    for col in cols:
+        try:
+            plt.figure(figsize=(6, 4))
+            num_df[col].dropna().hist(bins=30)
+            plt.title(f"{name} — {col} distribution")
+            plt.xlabel(col)
+            plt.ylabel("count")
+            out = REPORTS_DIR / f"{name.replace(' ', '_').lower()}_{col}_hist.png"
+            plt.tight_layout()
+            plt.savefig(out)
+            plt.close()
+            print(f"Saved histogram: {out}")
+        except Exception as e:
+            print(f"Could not plot numeric column {col}: {e}")
+
+
+def _plot_top_categorical(df: pd.DataFrame, name: str, n_top: int = 10):
+    """Save barplots for top categories of object columns (up to 4 columns)."""
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+
+    cat_cols = [c for c in df.columns if df[c].dtype == object][:4]
+    for col in cat_cols:
+        try:
+            vc = df[col].value_counts(dropna=False).head(n_top)
+            plt.figure(figsize=(8, 4))
+            sns.barplot(x=vc.values, y=vc.index)
+            plt.title(f"{name} — top {n_top} values for {col}")
+            plt.xlabel("count")
+            plt.ylabel(col)
+            out = REPORTS_DIR / f"{name.replace(' ', '_').lower()}_{col}_top{n_top}.png"
+            plt.tight_layout()
+            plt.savefig(out)
+            plt.close()
+            print(f"Saved category plot: {out}")
+        except Exception as e:
+            print(f"Could not plot categorical column {col}: {e}")
+
+
 def explore_dataset(name: str, head: int = 5, do_plot: bool = False):
     df = load_dataset(name)
     print(summarize(df, name=name))
@@ -102,6 +147,12 @@ def explore_dataset(name: str, head: int = 5, do_plot: bool = False):
     print(df.head(head).to_string())
     sample_path = save_sample(df, name)
     print(f"\nSample saved to: {sample_path}")
+    if do_plot:
+        try:
+            _plot_numeric_histograms(df, name)
+            _plot_top_categorical(df, name)
+        except Exception as e:
+            print(f"Plotting failed for {name}: {e}")
 
 
 def list_datasets():
