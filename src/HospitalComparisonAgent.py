@@ -1,3 +1,62 @@
+"""
+================================================================================
+                    HOSPITAL COMPARISON AI AGENT
+================================================================================
+
+PROJECT: Healthcare AI Assistant - Hospital Comparison Module
+AUTHOR: Venkateswari
+DATE: November 2025
+VERSION: 1.0
+
+DESCRIPTION:
+    This module implements an intelligent Hospital Comparison Agent powered by
+    LangChain and OpenAI's GPT-4. The agent analyzes hospital data and provides
+    personalized hospital recommendations based on user queries and preferences.
+
+KEY FEATURES:
+    ✓ AI-Powered Hospital Analysis: Uses GPT-4 to intelligently compare hospitals
+    ✓ Pandas DataFrame Integration: Efficiently processes hospital datasets
+    ✓ Condition-Specific Recommendations: Tailored advice based on medical needs
+    ✓ Multi-Factor Evaluation: Considers expertise, location, facilities, cost, and reviews
+    ✓ Natural Language Interface: Users can ask questions in plain English
+    ✓ Secure API Key Management: Uses environment variables for credentials
+
+MAIN COMPONENTS:
+    1. Data Loading: Reads hospital information from CSV files
+    2. LLM Configuration: Initializes GPT-4 model with optimized parameters
+    3. Agent Creation: Sets up LangChain pandas agent for data analysis
+    4. Query Processing: Handles user questions and generates recommendations
+
+WORKFLOW:
+    1. Load hospital dataset into Pandas DataFrame
+    2. Initialize ChatOpenAI model with API credentials
+    3. Create a specialized agent with healthcare-specific system prompts
+    4. Process user queries about hospitals
+    5. Return personalized recommendations with detailed analysis
+
+USE CASES:
+    • "Which hospital has good medical imaging?"
+    • "I have an emergency, please provide phone number of the hospital nearby San Mateo"
+    • "Which hospitals have good acute care facilities?"
+    • Custom queries about hospital features, specialties, and services
+
+SECURITY CONSIDERATIONS:
+    ⚠️  API keys are stored in environment variables (.env file)
+    ⚠️  Never hardcode sensitive information in source code
+    ⚠️  Use allow_dangerous_code=True carefully (enables code execution)
+    ⚠️  Ensure proper sandboxing for production deployments
+
+DEPENDENCIES:
+    • pandas: Data manipulation and analysis
+    • langchain: AI agent framework
+    • langchain_experimental: Pandas DataFrame agent tools
+    • langchain_openai: OpenAI integration
+    • python-dotenv: Environment variable management
+    • httpx: HTTP client for API requests
+
+================================================================================
+"""
+
 # Importing necessary libraries for data processing, AI model integration, and agent creation
 
 # Pandas library for handling and processing structured data (CSV, DataFrames)
